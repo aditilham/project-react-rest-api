@@ -2,12 +2,10 @@ import React from "react";
 import axios from "axios";
 import "./App.css";
 
-const API_STRING = "http://haekal-todo-list-api.herokuapp.com/todos";
-
 export default class Todos extends React.Component {
   state = {
     description: "",
-    description: "",
+    // description: "",
     tasks: [],
     showingTask: true,
     showingEdit: false,
@@ -19,7 +17,7 @@ export default class Todos extends React.Component {
   };
 
   deleteSubmit = index => {
-    axios.delete(`${API_STRING}/${index}`).then(res => {
+    axios.delete(`${process.env.REACT_APP_API}/${index}`).then(res => {
       this.setState({
         tasks: res.data
       });
@@ -41,7 +39,7 @@ export default class Todos extends React.Component {
 
   editTask = index => {
     axios
-      .put(`${API_STRING}/${index}`, {
+      .put(`${process.env.REACT_APP_API}/${index}`, {
         description: this.state.description
       })
       .then(res => {
@@ -58,7 +56,7 @@ export default class Todos extends React.Component {
   };
 
   componentDidMount() {
-    axios.get(API_STRING).then(res => {
+    axios.get(process.env.REACT_APP_API).then(res => {
       const tasks = res.data;
       this.setState({ tasks });
     });
@@ -68,7 +66,7 @@ export default class Todos extends React.Component {
     event.preventDefault();
 
     axios
-      .post(API_STRING, {
+      .post(process.env.REACT_APP_API, {
         description: this.state.description
       })
       .then(res => {
@@ -80,6 +78,7 @@ export default class Todos extends React.Component {
       });
   };
 
+  // console.log(process.env.API_STRING);
   render() {
     return (
       <div className="App App-header">
@@ -109,7 +108,6 @@ export default class Todos extends React.Component {
               return (
                 <tr key={index}>
                   <td>
-                    {/* {this.state.showingtask && <div>{data.description} </div>} */}
                     {this.state.id === index && (
                       <input
                         type="text"
